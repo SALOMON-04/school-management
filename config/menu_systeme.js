@@ -1,0 +1,1071 @@
+import { menuPrincipal, menuRole, menuAdmin, menuProfesseur, menuEtudiant } from "./menu.js";
+
+import { question, fermer, connexionUser, connexionEtudiant } from "./authantification.js";
+
+import { createUser, getAllUsers, updateUsers, getUserById, deleteUser } from "../services/servicesUsers.js";
+import { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherById, updateTeacher, deleteTeacher } from "../services/servicesTeachers.js";
+import { createSubject, getAllSubjects, getSubjectById, updateASubject, affectTeacherSubject, deleteSubject } from "../services/servicesSubjects.js";
+import { createStudent, getAllStudents, getStudentById, updateStudent, deleteStudent } from "../services/servicesStudents.js";
+import { addNoteGrade, updateGrades, deleteGrades, affGrades, getStudentGrades, calculMoyenne, meilleurEtudiant } from "../services/servicesGrades.js";
+import { createAbsence, getAllAbscence, getAbsenceById, updateAbsence, deleteAbsence, nombreAbsences, getStudentAbsences } from "../services/servicesAbsences.js";
+import { moyenneGeneraleByStudent, moyenneGeneraleEcole, moyenneGeneralEtuddiant, totalUsers, totalStudent, totalProfesseur } from "../services/servicesStatistiques.js";
+import { logger } from "../utils/logger.js";
+import { log } from "console";
+
+
+
+
+const sommaireAdmin = async (user) => {
+
+    let continuer = true;
+
+    // cette boucle permet de resté dans le menu principale de l'administrateur
+
+    while (continuer) {
+
+        // "choix" permet de recupérer le menuAmin dans notre fichier menu
+        const choix = await question(menuAdmin);
+
+
+        switch (choix.trim()) {
+
+
+            // GESTION DES UTILISATEURS : le sous menu qui permet 
+            // d'avoir accès sur ce qui concerne tout type d'utilisateur
+
+            case "1": {
+                let sousMenu = true;
+                while (sousMenu) {
+
+                    const sousChoix = await question(`
+                        
+==========================
+  GÉRER LES UTILISATEURS 
+==========================
+
+1. Ajouter un utilisateur
+2. Modifier un utilisateur
+3. Supprimer un utilisateur
+4. Lister tous les utilisateurs
+5. Rechercher un utilisateur
+0. Retour
+
+===========================
+
+Votre choix : `);
+
+                    switch (sousChoix.trim()) {
+
+
+                        // Enregistrement d'un nouvel utilisateur
+
+                        case "1": {
+
+                            const nom = await question("Nom : ");
+                            const role = await question("Rôle (admin / profésseur) : ");
+                            const password = await question("Mot de passe : ");
+
+                            createUser(nom, role, password);
+                            console.log("Utilisateur ajouté.");
+                            break;
+
+                        }
+
+
+                        // Modification des infos d'un utilisateur t
+
+                        case "2": {
+
+                            const id = await question("ID de l'utilisateur à modifier : ");
+                            const nom = await question("Nouveau nom : ");
+                            const role = await question("Nouveau rôle : ");
+
+
+                            // cette condition verifi si les champs de modif ne son pas vide si oui, on la modif n'est pas enregistré
+
+                            if (!nom.trim() || !role.trim()) {
+                                console.log("Tous les champ sont obligatoires");
+                                break;
+                            }
+
+                            updateUsers(Number(id), { nom, role });
+                            console.log("Utilisateur modifié.");
+                            break;
+                        }
+
+
+                        // Suppression d'un utilisateur par son ID
+
+                        case "3": {
+
+                            const id = await question("ID de l'utilisateur à supprimer : ");
+                            deleteUser(Number(id));
+
+                            console.log("Utilisateur supprimé.");
+                            break;
+
+                        }
+
+
+                        // Affichage de tous les utilisateurs
+
+                        case "4": {
+                            console.table(getAllUsers());
+                            break;
+                        }
+
+
+                        // Recherche d'un seul utilisateur par son ID
+
+                        case "5": {
+                            const id = await question("ID de l'utilisateur : ");
+                            console.log(getUserById(Number(id)));
+                            break;
+                        }
+
+                        case "0": sousMenu = false; break;
+                        default: console.log("Choix invalide.");
+                    }
+                }
+
+            } break;
+
+
+
+            // MENU DE GESTION DE L'ETUDIANT : le sous menu qui permet 
+            // d'avoir accès sur ce qui concerne tous étudiants
+
+            case "2": {
+
+
+                //  cette boucle nous permet de ne pas sortir du menu des utilisateur après une action
+                let sousMenu = true;
+                while (sousMenu) {
+
+
+                    const sousChoix = await question(`
+===========================
+    GÉRER LES ÉTUDIANTS
+===========================
+
+1. Ajouter un étudiant
+2. Modifier un étudiant
+3. Supprimer un étudiant
+4. Lister tous les étudiants
+5. Rechercher un étudiant
+0. Retour
+
+===========================
+
+Votre choix : `);
+
+                    switch (sousChoix.trim()) {
+
+                        // Enregistremant d'un étudiant
+
+                        case "1": {
+
+                            const matricule = await question("Matricule : ");
+                            const nom = await question("Nom : ");
+                            const prenom = await question("Prénom : ");
+                            const age = await question("Âge : ");
+                            const classe = await question("Classe : ");
+                            const password = await question("Mot de passe : ");
+
+                            createStudent(matricule, nom, prenom, Number(age), classe, password);
+
+                            console.log("Étudiant ajouté.");
+                            logger.action(user.nom, `a ajouté l'étudiant ${prenom} ${nom} (matricule: ${matricule})`);
+                            break;
+                        }
+
+
+                        // Modiffication d'es information d'un étudiant
+
+                        case "2": {
+
+                            const id = await question("ID de l'étudiant à modifier : ");
+                            const matricule = await question("Nouveau matricule : ");
+                            const nom = await question("Nouveau nom : ");
+                            const prenom = await question("Nouveau prénom : ");
+                            const age = await question("Nouvel âge : ");
+                            const classe = await question("Nouvelle classe : ");
+
+
+                            // Cette condition perlet de v'rifier si un champs est vide si oui, l'enregistrement est annulé
+
+                            if (!matricule.trim() || !nom.trim() || !prenom.trim() || !age.trim() || !classe.trim()) {
+                                console.log("Tous les champs sont obligatoires.");
+                                break;
+                            }
+
+                            updateStudent(Number(id), { matricule, nom, prenom, age: Number(age), classe });
+                            console.log("Étudiant modifié.");
+                            break;
+                        }
+
+
+                        // Supression d'un étudiant
+
+                        case "3": {
+
+                            const id = await question("ID de l'étudiant à supprimer : ");
+
+                            deleteStudent(Number(id));
+                            console.log("Étudiant supprimé.");
+                            logger.action(user.nom, `a supprimé l'étudiant ID ${id}`);
+                            break;
+                        }
+
+                        // Liste de tous les étudiants
+
+                        case "4": {
+                            const etudiants = getAllStudents();
+                            console.table(etudiants);
+                            break;
+                        }
+
+
+                        // rechercher un etudiant
+
+                        case "5": {
+                            const id = await question("ID de l'étudiant : ");
+                            const etudiant = getStudentById(Number(id));
+                            console.log(etudiant ?? "Étudiant introuvable.");
+                            break;
+                        }
+
+                        case "0": sousMenu = false; break;
+                        default: console.log("Choix invalide.");
+                    }
+                }
+
+            } break;
+
+
+
+
+
+            // MENU GESTION DU PROFFESSEUR : le sous menu qui permet 
+            // d'avoir accès sur ce qui concerne tous les profésseurs
+
+            case "3": {
+
+
+                //  cette boucle nous permet de ne pas sortir du menu des proffesseur après une action
+                let sousMenu = true;
+                while (sousMenu) {
+
+                    const sousChoix = await question(`
+
+=============================
+    GÉRER LES PROFESSEURS 
+=============================
+
+1. Ajouter un professeur
+2. Modifier un professeur
+3. Supprimer un professeur
+4. Lister tous les professeurs
+5. Rechercher un professeur
+0. Retour
+
+=============================
+Votre choix : `);
+
+                    switch (sousChoix.trim()) {
+
+                        // Enregistrement d'un profésseur
+
+                        case "1": {
+
+                            // Affiche toutes les matières pour le choix des id
+                            console.table(getAllSubjects());
+
+                            const nom = await question("Nom : ");
+                            const matiere = await question("ID de la matière : ");
+                            const password = await question("Mot de pass : ")
+                            createTeacher(nom, matiere, password);
+
+                            console.log("Professeur ajouté.");
+                            break;
+                        }
+
+
+                        // Modiffcation des infos d'un profésseur
+
+                        case "2": {
+
+                            console.table(getAllSubjects());
+
+                            const id = await question("ID du professeur à modifier : ");
+                            const nom = await question("Nouveau nom : ");
+                            const matiere = await question("Nouvelle ID de la matière : ");
+
+
+                            // PERMET VERIFIER SI LES CHAMPS SONT VIDES LORS DE LA MODIFFICATION
+
+                            if (!nom.trim() || !matiere.trim()) {
+                                console.log("Tous les champs sont obligatoires.");
+                                break;
+                            }
+
+                            updateTeacher(Number(id), { nom, matiere });
+                            console.log("Professeur modifié.");
+                            break;
+                        }
+
+
+                        // Supression d'un  prof
+
+                        case "3": {
+
+                            const id = await question("ID du professeur à supprimer : ");
+                            deleteTeacher(Number(id));
+
+                            console.log("Professeur supprimé.");
+                            break;
+                        }
+
+
+
+                        // Affichage de tous les professeurs avec le nom de leur matière
+
+                        case "4": {
+
+                            console.table(getAllTeacherAvecMatiere());
+                            break;
+
+                        }
+
+
+                        // affichage d'un profésseur
+
+                        case "5": {
+
+                            const id = await question("ID du professeur : ");
+                            console.log(getTeacherById(Number(id)));
+                            break;
+
+                        }
+
+                        case "0": sousMenu = false; break;
+                        default: console.log("Choix invalide.");
+                    }
+                }
+
+            } break;
+
+
+
+            // GESTION  DES MATIERE : le sous menu qui permet 
+            // d'avoir accès sur ce qui concerne tous les matières au programme
+
+            case "4": {
+
+
+                //  cette boucle nous permet de ne pas sortir du menu des matières après une action
+
+                let sousMenu = true;
+                while (sousMenu) {
+
+                    const sousChoix = await question(`
+
+==========================
+    GÉRER LES MATIÈRES 
+==========================
+
+1. Ajouter une matière
+2. Affecter un professeur à une matière
+3. Lister toutes les matières
+4. modifier une matière
+5. Rechercher une matière
+6. Supprimer une matière
+0. Retour
+
+==========================
+
+Votre choix : `);
+
+                    switch (sousChoix.trim()) {
+
+
+                        // Enregistrement d'une  nouvelle matière
+
+                        case "1": {
+
+                            const nom = await question("Nom de la matière : ");
+                            createSubject(nom);
+
+                            console.log("Matière ajoutée.");
+                            break;
+                        }
+
+
+                        // affectaion d'une matière a unprofésseur
+
+                        case "2": {
+
+                            // Lister tous les profs
+                            console.table(getAllTeacher())
+
+                            const subjectId = await question("ID de la matière : ");
+                            const teacherId = await question("ID du professeur : ");
+
+                            affectTeacherSubject(Number(subjectId), Number(teacherId));
+                            console.log("Professeur affecté.");
+                            break;
+
+                        }
+
+
+                        // Liste de toutes les matières
+
+                        case "3": {
+                            console.table(getAllSubjects());
+                            break;
+                        }
+
+
+                        // Modification d'une matière avec le prof concerné
+
+                        case "4": {
+
+                            const id = await question("ID de la note à modifier : ");
+                            const matiere = await question("Nouvelle matière : ");
+
+                            if (!matiere.trim()) {
+                                console.log('Le champ ma ne doit pas etre vide');
+                                break;
+
+                            }
+
+                            updateASubject(Number(id), { nom: matiere });
+                            console.log("matière modifiée.");
+                            break;
+
+                        }
+
+
+                        // Rechrche d'une seule matière par son ID
+
+                        case "5": {
+
+                            const id = await question("ID de la matière : ");
+                            console.log(getSubjectById(Number(id)));
+                            break;
+                        }
+
+                        // Supression de la matière par son ID
+
+                        case "6": {
+
+                            const id = await question("ID de la matière à supprimer : ");
+                            deleteSubject(Number(id));
+
+                            console.log("Matière supprimée.");
+                            break;
+                        }
+
+
+                        case "0": sousMenu = false; break;
+                        default: console.log("Choix invalide.");
+                    }
+
+                }
+
+            } break;
+
+
+
+
+
+            //   GESTION DES MENU : le sous menu qui permet 
+            // d'avoir accès sur ce qui concerne tous les notes
+
+            case "5": {
+
+
+                //  cette boucle nous permet de ne pas sortir du menu des nptes après une action
+
+                let sousMenu = true;
+                while (sousMenu) {
+
+                    const sousChoix = await question(`
+                        
+=======================  
+    GÉRER LES NOTES                      
+=======================
+
+1. Ajouter une note
+2. Modifier une note
+3. Supprimer une note
+4. Voir les notes d'un étudiant
+5. Calculer la moyenne d'un étudiant
+0. Retour
+
+=======================
+
+Votre choix : `);
+
+                    switch (sousChoix.trim()) {
+
+
+                        // Ajout d'une note pour un étudiant dans une matière
+
+                        case "1": {
+
+                            const student_id = await question("ID de l'étudiant : ");
+                            const subject_id = await question("ID de la matière : ");
+                            const note = await question("Note : ");
+
+                            addNoteGrade(Number(student_id), Number(subject_id), Number(note));
+                            console.log("Note ajoutée.");
+                            break;
+
+                        }
+
+
+                        // Modification d'une note existante
+
+                        case "2": {
+
+                            const id = await question("ID de la note à modifier : ");
+                            const note = await question("Nouvelle note : ");
+
+                            if (!note.trim()) {
+                                console.log('Le champ note ne doit pas etre vide');
+                                break;
+
+                            }
+
+                            updateGrades(Number(id), { note: Number(note) });
+                            console.log("Note modifiée.");
+                            break;
+
+                        }
+
+
+                        // Suppression d'une note par son ID
+
+                        case "3": {
+
+                            const id = await question("ID de la note à supprimer : ");
+                            deleteGrades(Number(id));
+
+                            console.log("Note supprimée.");
+                            break;
+                        }
+
+
+
+                        // Affichage des notes d'un étudiant dans une matière
+
+                        case "4": {
+
+                            const student_id = await question("ID de l'étudiant : ");
+                            const subject_id = await question("ID de la matière : ");
+
+                            console.log(getStudentGrades(Number(student_id), Number(subject_id)));
+                            break;
+                        }
+
+
+                        // Calcul de la moyenne d'un étudiant dans une matière
+
+                        case "5": {
+
+                            const student_id = await question("ID de l'étudiant : ");
+                            const subject_id = await question("ID de la matière : ");
+
+                            console.log(calculMoyenne(Number(student_id), Number(subject_id)));
+                            break;
+                        }
+
+                        case "0": sousMenu = false; break;
+                        default: console.log("Choix invalide.");
+
+                    }
+
+                }
+
+            } break;
+
+
+
+            // MENU DE GESTION DES ABSCENCES : le sous menu qui permet 
+            // d'avoir accès sur ce qui concerne tous les absences
+
+            case "6": {
+
+
+                //  cette boucle nous permet de ne pas sortir du menu des absences après une action
+                let sousMenu = true;
+                while (sousMenu) {
+
+                    const sousChoix = await question(`
+
+==========================
+    GÉRER LES ABSENCES
+==========================
+
+1. Enregistrer une absence
+2. Modifier une absence
+3. Supprimer une absence
+4. Voir les absences d'un étudiant
+5. Compter les absences non justifiées
+0. Retour
+
+==========================
+
+Votre choix : `);
+
+                    switch (sousChoix.trim()) {
+
+
+                        // Enregistrement d'une absence pour un étudiant
+
+                        case "1": {
+                            const student_id = await question("ID de l'étudiant : ");
+                            const status = await question("Statut (Justifié / Non justifié) : ");
+
+                            createAbsence(Number(student_id), status);
+                            console.log("Absence enregistrée.");
+                            break;
+                        }
+
+
+                        // Modification d'une absence existante
+
+                        case "2": {
+
+                            const id = await question("ID de l'absence à modifier : ");
+                            const student_id = await question("Nouvel ID étudiant : ");
+                            const status = await question("Nouveau statut (Justifié / Non justifié) : ");
+
+
+                            // cette condition permet de verifier si les champ son vide lor de la modification, si oui on enregistre pas
+
+                            if (!student_id.trim() || !status.trim()) {
+                                console.log("Tous les champs sont obligatoires.");
+                                break;
+                            }
+
+                            const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                            updateAbsence(Number(id), { student_id: Number(student_id), date, status });
+                            console.log("Absence modifiée.");
+                            break;
+                        }
+
+
+                        // Suppression d'une absence par son ID
+
+                        case "3": {
+
+                            const id = await question("ID de l'absence à supprimer : ");
+                            deleteAbsence(Number(id));
+
+                            console.log("Absence supprimée.");
+                            break;
+
+                        }
+
+
+                        // Affichage de toutes les absences d'un étudiant
+
+                        case "4": {
+
+                            const student_id = await question("ID de l'étudiant : ");
+                            console.log(getStudentAbsences(Number(student_id)));
+                            break;
+                        }
+
+
+                        // Comptage des absences non justifiées d'un étudiant
+
+                        case "5": {
+                            const student_id = await question("ID de l'étudiant : ");
+                            console.log(nombreAbsences(Number(student_id)));
+                            break;
+                        }
+
+                        case "0": sousMenu = false; break;
+                        default: console.log("Choix invalide.");
+                    }
+
+                }
+
+            } break;
+
+
+
+
+            // MENU DES STATISTIQUES : le sous menu qui permet 
+            // d'avoir accès sur ce qui concerne tous les absences
+
+            case "7": {
+
+
+                // Cette boucle nous permet de ne pas sortir du menu des statistiques après une action
+
+                let sousMenu = true;
+                while (sousMenu) {
+
+                    const sousChoix = await question(`
+
+===========================
+       STATISTIQUES 
+===========================
+
+1. Moyenne d'un étudiant par matière
+2. Moyenne générale d'un étudiant
+3. Moyenne générale de l'école
+4. Meilleur étudiant par matière
+5. Meilleur étudiant toutes matières confondues
+6. Compter les absences d'un étudiant
+7. Nombre total d'utilisateurs
+8. Nombre total d'étudiants
+9. Nombre total de professeurs
+0. Retour
+
+===========================
+
+Votre choix : `);
+
+                    switch (sousChoix.trim()) {
+
+
+                        // Moyenne d'un étudiant dans une matière précise
+
+                        case "1": {
+
+                            const student_id = await question("ID de l'étudiant : ");
+                            const subject_id = await question("ID de la matière : ");
+
+                            console.log(calculMoyenne(Number(student_id), Number(subject_id)));
+                            break;
+
+                        }
+
+
+                        // Moyenne générale d'un étudiant toutes matières confondues
+
+                        case "2": {
+
+                            const student_id = await question("ID de l'étudiant : ");
+
+                            console.log(moyenneGeneraleByStudent(Number(student_id)));
+                            break;
+
+                        }
+
+
+
+                        // Moyenne générale de toute l'école
+
+                        case "3": {
+                            console.log(moyenneGeneraleEcole());
+                            break;
+                        }
+
+
+                        // Meilleur étudiant dans une matière précise
+
+                        case "4": {
+
+                            const subject_id = await question("ID de la matière : ");
+
+                            console.log(meilleurEtudiant(Number(subject_id)));
+                            break;
+
+                        }
+
+
+
+                        // Meilleur étudiant toutes matières confondues
+
+                        case "5": {
+                            console.log(moyenneGeneralEtuddiant());
+                            break;
+                        }
+
+
+                        // Comptage des absences non justifiées d'un étudiant
+
+                        case "6": {
+
+                            const student_id = await question("ID de l'étudiant : ");
+
+                            console.log(nombreAbsences(Number(student_id)));
+                            break;
+
+                        }
+
+
+                        // Nombre total d'utilisateurs enregistrés
+
+                        case "7": {
+                            console.log(totalUsers());
+                            break;
+                        }
+
+
+                        // Nombre total d'utilisateurs étudiants
+
+                        case "8": {
+                            console.log(totalStudent());
+                            break;
+                        }
+
+
+                        // Nombre total d'utilisateurs profésseur
+
+                        case "9": {
+                            console.log(totalProfesseur());
+                            break;
+                        }
+
+                        case "0": sousMenu = false; break;
+                        default: console.log("Choix invalide.");
+                    }
+
+                }
+
+            } break;
+
+
+            case "0": continuer = false; break;
+            default: console.log("Choix invalide.");
+        }
+
+    }
+
+};
+
+
+// MENU PROFFESSEUR
+
+
+const sommaireProfesseur = async (user) => {
+    let continuer = true;
+
+    //  cette boucle nous permet de ne pas sortir du sommaire profésseur après une action
+
+    while (continuer) {
+        const choix = await question(menuProfesseur);
+
+        switch (choix.trim()) {
+
+            // Ajout d'une note pour un étudiant 
+
+            case "1": {
+
+                const student_id = await question("ID de l'étudiant : ");
+                const subject_id = await question("ID de la matière : ");
+                const note = await question("Note : ");
+
+                addNoteGrade(Number(student_id), Number(subject_id), Number(note));
+                console.log("Note ajoutée.");
+                break;
+
+            }
+
+
+            // Modification d'une note existante
+
+            case "2": {
+
+                const id = await question("ID de la note à modifier : ");
+                const note = await question("Nouvelle note : ");
+
+                updateGrades(Number(id), { note: Number(note) });
+                console.log("Note modifiée.");
+                break;
+
+            }
+
+
+
+            // Enregistrement d'une absence pour un étudiant
+
+            case "3": {
+
+                const student_id = await question("ID de l'étudiant : ");
+                const status = await question("Statut (Justifié / Non justifié) : ");
+
+                createAbsence(Number(student_id), status);
+                console.log("Absence enregistrée.");
+                break;
+
+            }
+
+            // Affichage de tous les étudiants
+
+            case "4": {
+                console.table(getAllStudents()); break;
+            }
+
+            case "0": continuer = false; break;
+
+            default: console.log("Choix invalide.");
+        }
+    }
+};
+
+
+
+// MENU ETUDIANT  : ce menu donne accès uniquement à la consultation —
+// l'étudiant ne peut que voir ses propres notes, moyenne, matières et absences
+
+
+const sommaireEtudiant = async (etudiant) => {
+
+    let continuer = true;
+
+
+    //  cette boucle nous permet de ne pas sortir du sommaire étudiant après une action
+
+    while (continuer) {
+
+        const choix = await question(menuEtudiant);
+
+        switch (choix.trim()) {
+
+
+            // Affichage des notes de l'étudiant dans une matière
+
+            case "1": {
+
+                const matieres = getAllSubjects();
+
+                let texte = "\n=== CHOISIR UNE MATIÈRE ===\n";
+
+                for (let i = 0; i < matieres.length; i++) {
+
+                    texte += `${matieres[i].id}. ${matieres[i].nom}\n`;
+
+                }
+
+                texte += "Votre choix : ";
+
+                const subjectId = await question(texte);
+                console.table(getStudentGrades(etudiant.id, Number(subjectId)));
+                break;
+
+            }
+
+
+            // Calcul de la moyenne de l'étudiant dans une matière
+
+            case "2": {
+
+                const matieres = getAllSubjects();
+
+                let texte = "\n=== CHOISIR UNE MATIÈRE ===\n";
+
+                for (let i = 0; i < matieres.length; i++) {
+
+                    texte += `${matieres[i].id}. ${matieres[i].nom}\n`;
+                }
+
+                texte += "Votre choix : ";
+
+
+                const subjectId = await question(texte);
+                console.log(calculMoyenne(etudiant.id, Number(subjectId)));
+                break;
+
+            }
+
+
+            // Affichage de toutes les matières disponibles
+
+            case "3": {
+                console.table(getAllSubjects());
+                break;
+            }
+
+
+            // Affichage de toutes les absences de l'étudiant
+
+            case "4": {
+                console.table(getStudentAbsences(etudiant.id));
+                break;
+            }
+
+            case "0": continuer = false; break;
+            default: console.log("Choix invalide.");
+        }
+
+    }
+
+};
+
+
+
+// GESTION DES ROLE ET VERIFICATION DE CONEXION
+
+const choisirRole = async () => {
+
+    const choix = await question(menuRole);
+
+    switch (choix.trim()) {
+
+        case "1": {
+            const user = await connexionUser("admin");
+            if (user) await sommaireAdmin(user);
+            break;
+        }
+
+        case "2": {
+            const user = await connexionUser("professeur");
+            if (user) await sommaireProfesseur(user);
+            break;
+        }
+
+        case "3": {
+            const etudiant = await connexionEtudiant();
+            if (etudiant) await sommaireEtudiant(etudiant);
+            break;
+        }
+
+        case "0": return;
+        default: console.log("Choix invalide.");
+    }
+
+};
+
+
+
+// FONCTION DE D2MARAGE DU PROGRAME
+
+
+export const demarrer = async () => {
+
+    console.log(`
+╔════════════════════════════════════════╗
+║   BIENVENU DANS MON SYTEME DE GESTION  ║
+║              SCOLAIRE                  ║
+╚════════════════════════════════════════╝
+`);
+
+    let continuer = true;
+
+    while (continuer) {
+        const choix = await question(menuPrincipal);
+
+        switch (choix.trim()) {
+            case "1":
+                await choisirRole();
+                break;
+
+            case "0":
+                continuer = false;
+                break;
+
+            default:
+                console.log(" Choix invalide.");
+        }
+    }
+
+    fermer();
+};
