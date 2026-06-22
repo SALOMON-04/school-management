@@ -73,6 +73,35 @@ const updateStudent = (id, data) => {
 
 
 
+// CHOISIR UN ETUDIANT POUR LE PROF : on fait corresponde le choix du prof à
+// l'id de l'etudiant sans que le prof sache ce que c'est 
+
+const choixEtudiant = async (question) => {
+
+    const etudiants = getAllStudents() ;
+
+    let texte = `
+    ===========================
+        CHOISIR UN ETUDIANT
+    ===========================
+    `;
+
+
+    for(let i = 0; i < etudiants.length;  i++){
+
+        texte += `${etudiants[i].id}. ${etudiants[i].prenom} ${etudiants[i].nom}\n`;
+    } ;
+
+
+    texte += "Votre choix : " ;
+
+    const id = await question(texte) ;
+
+    return Number(id)
+}
+
+
+
 // SUPPRIMER UN ETUDIANT
 
 const deleteStudent = (id) => {
@@ -83,4 +112,4 @@ const deleteStudent = (id) => {
 
 
 
-export { createStudent, getAllStudents, getStudentById, getStudentByMatricule, updateStudent, deleteStudent }
+export { createStudent, getAllStudents, getStudentById, getStudentByMatricule, updateStudent, choixEtudiant, deleteStudent }

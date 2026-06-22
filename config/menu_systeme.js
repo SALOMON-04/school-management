@@ -4,13 +4,13 @@ import { question, fermer, connexionUser, connexionEtudiant } from "./authantifi
 
 import { createUser, getAllUsers, updateUsers, getUserById, deleteUser } from "../services/servicesUsers.js";
 import { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherById, updateTeacher, deleteTeacher } from "../services/servicesTeachers.js";
-import { createSubject, getAllSubjects, getSubjectById, updateASubject, affectTeacherSubject, deleteSubject } from "../services/servicesSubjects.js";
-import { createStudent, getAllStudents, getStudentById, updateStudent, deleteStudent } from "../services/servicesStudents.js";
+import { createSubject, getAllSubjects, getSubjectById, updateASubject, choixMatiere, affectTeacherSubject, deleteSubject } from "../services/servicesSubjects.js";
+import { createStudent, getAllStudents, getStudentById, updateStudent, choixEtudiant, deleteStudent } from "../services/servicesStudents.js";
 import { addNoteGrade, updateGrades, deleteGrades, affGrades, getStudentGrades, calculMoyenne, meilleurEtudiant } from "../services/servicesGrades.js";
 import { createAbsence, getAllAbscence, getAbsenceById, updateAbsence, deleteAbsence, nombreAbsences, getStudentAbsences } from "../services/servicesAbsences.js";
 import { moyenneGeneraleByStudent, moyenneGeneraleEcole, moyenneGeneralEtuddiant, totalUsers, totalStudent, totalProfesseur } from "../services/servicesStatistiques.js";
-import { logger } from "../utils/logger.js";
-import { log } from "console";
+import { logger } from "../utils/logger.js"; 
+
 
 
 
@@ -67,6 +67,7 @@ Votre choix : `);
 
                             createUser(nom, role, password);
                             console.log("Utilisateur ajouté.");
+                            logger.info(`${user.nom} a ajouté l'utilisateur ${nom} (${role})`);
                             break;
 
                         }
@@ -85,11 +86,13 @@ Votre choix : `);
 
                             if (!nom.trim() || !role.trim()) {
                                 console.log("Tous les champ sont obligatoires");
+                                logger.warning(`${user.nom} a tenté de modifier l'utilisateur ID ${id} avec des champs vides`);
                                 break;
                             }
 
                             updateUsers(Number(id), { nom, role });
                             console.log("Utilisateur modifié.");
+                            logger.info(`${user.nom} a modifié l'utilisateur ID ${id}`);
                             break;
                         }
 
@@ -102,6 +105,7 @@ Votre choix : `);
                             deleteUser(Number(id));
 
                             console.log("Utilisateur supprimé.");
+                             logger.info(`${user.nom} a supprimé l'utilisateur ID ${id}`);
                             break;
 
                         }
@@ -173,9 +177,9 @@ Votre choix : `);
                             const password = await question("Mot de passe : ");
 
                             createStudent(matricule, nom, prenom, Number(age), classe, password);
-
                             console.log("Étudiant ajouté.");
-                            logger.action(user.nom, `a ajouté l'étudiant ${prenom} ${nom} (matricule: ${matricule})`);
+                            logger.info(`${user.nom} a ajouté l'étudiant ${prenom} ${nom} (matricule: ${matricule})`);
+                            
                             break;
                         }
 
@@ -196,11 +200,13 @@ Votre choix : `);
 
                             if (!matricule.trim() || !nom.trim() || !prenom.trim() || !age.trim() || !classe.trim()) {
                                 console.log("Tous les champs sont obligatoires.");
+                                logger.warning(`${user.nom} a tenté de modifier l'étudiant ID ${id} avec des champs vides`);
                                 break;
                             }
 
                             updateStudent(Number(id), { matricule, nom, prenom, age: Number(age), classe });
                             console.log("Étudiant modifié.");
+                            logger.info(`${user.nom} a modifié l'étudiant ID ${id}`);
                             break;
                         }
 
@@ -213,7 +219,7 @@ Votre choix : `);
 
                             deleteStudent(Number(id));
                             console.log("Étudiant supprimé.");
-                            logger.action(user.nom, `a supprimé l'étudiant ID ${id}`);
+                             logger.info(`${user.nom} a supprimé l'étudiant ID ${id}`);
                             break;
                         }
 
@@ -287,6 +293,7 @@ Votre choix : `);
                             createTeacher(nom, matiere, password);
 
                             console.log("Professeur ajouté.");
+                             logger.info(`${user.nom} a ajouté le professeur ${nom}`);
                             break;
                         }
 
@@ -306,11 +313,13 @@ Votre choix : `);
 
                             if (!nom.trim() || !matiere.trim()) {
                                 console.log("Tous les champs sont obligatoires.");
+                                logger.warning(`${user.nom} a tenté de modifier le professeur ID ${id} avec des champs vides`);
                                 break;
                             }
 
                             updateTeacher(Number(id), { nom, matiere });
                             console.log("Professeur modifié.");
+                            logger.info(`${user.nom} a modifié le professeur ID ${id}`);
                             break;
                         }
 
@@ -323,6 +332,7 @@ Votre choix : `);
                             deleteTeacher(Number(id));
 
                             console.log("Professeur supprimé.");
+                             logger.info(`${user.nom} a supprimé le professeur ID ${id}`);
                             break;
                         }
 
@@ -397,6 +407,7 @@ Votre choix : `);
                             createSubject(nom);
 
                             console.log("Matière ajoutée.");
+                            logger.info(`${user.nom} a ajouté la matière ${nom}`);
                             break;
                         }
 
@@ -413,6 +424,7 @@ Votre choix : `);
 
                             affectTeacherSubject(Number(subjectId), Number(teacherId));
                             console.log("Professeur affecté.");
+                            logger.info(`${user.nom} a affecté le professeur ID ${teacherId} à la matière ID ${subjectId}`);
                             break;
 
                         }
@@ -435,12 +447,14 @@ Votre choix : `);
 
                             if (!matiere.trim()) {
                                 console.log('Le champ ma ne doit pas etre vide');
+                                 logger.warning(`${user.nom} a tenté de modifier la matière ID ${id} avec un champ vide`);
                                 break;
 
                             }
 
                             updateASubject(Number(id), { nom: matiere });
                             console.log("matière modifiée.");
+                            logger.info(`${user.nom} a modifié la matière ID ${id}`);
                             break;
 
                         }
@@ -463,6 +477,7 @@ Votre choix : `);
                             deleteSubject(Number(id));
 
                             console.log("Matière supprimée.");
+                            logger.info(`${user.nom} a supprimé la matière ID ${id}`);
                             break;
                         }
 
@@ -520,6 +535,7 @@ Votre choix : `);
 
                             addNoteGrade(Number(student_id), Number(subject_id), Number(note));
                             console.log("Note ajoutée.");
+                            logger.info(`${user.nom} a ajouté la note ${note} pour l'étudiant ID ${student_id} en matière ID ${subject_id}`);
                             break;
 
                         }
@@ -534,12 +550,14 @@ Votre choix : `);
 
                             if (!note.trim()) {
                                 console.log('Le champ note ne doit pas etre vide');
+                                logger.warning(`${user.nom} a tenté de modifier la note ID ${id} avec un champ vide`);
                                 break;
 
                             }
 
                             updateGrades(Number(id), { note: Number(note) });
                             console.log("Note modifiée.");
+                            logger.info(`${user.nom} a modifié la note ID ${id}`);
                             break;
 
                         }
@@ -553,6 +571,7 @@ Votre choix : `);
                             deleteGrades(Number(id));
 
                             console.log("Note supprimée.");
+                            logger.info(`${user.nom} a supprimé la note ID ${id}`);
                             break;
                         }
 
@@ -630,6 +649,7 @@ Votre choix : `);
 
                             createAbsence(Number(student_id), status);
                             console.log("Absence enregistrée.");
+                             logger.info(`${user.nom} a enregistré une absence (${status}) pour l'étudiant ID ${student_id}`);
                             break;
                         }
 
@@ -647,12 +667,14 @@ Votre choix : `);
 
                             if (!student_id.trim() || !status.trim()) {
                                 console.log("Tous les champs sont obligatoires.");
+                                logger.warning(`${user.nom} a tenté de modifier l'absence ID ${id} avec des champs vides`);
                                 break;
                             }
 
                             const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
                             updateAbsence(Number(id), { student_id: Number(student_id), date, status });
                             console.log("Absence modifiée.");
+                             logger.info(`${user.nom} a modifié l'absence ID ${id}`);
                             break;
                         }
 
@@ -665,6 +687,7 @@ Votre choix : `);
                             deleteAbsence(Number(id));
 
                             console.log("Absence supprimée.");
+                             logger.info(`${user.nom} a supprimé l'absence ID ${id}`);
                             break;
 
                         }
@@ -859,12 +882,13 @@ const sommaireProfesseur = async (user) => {
 
             case "1": {
 
-                const student_id = await question("ID de l'étudiant : ");
-                const subject_id = await question("ID de la matière : ");
+                const student_id = await choixEtudiant(question);
+                const subject_id = await choixMatiere(question);
                 const note = await question("Note : ");
 
                 addNoteGrade(Number(student_id), Number(subject_id), Number(note));
                 console.log("Note ajoutée.");
+                logger.info(`${user.nom} a ajouté la note ${note} pour l'étudiant ID ${student_id}`);
                 break;
 
             }
@@ -874,11 +898,28 @@ const sommaireProfesseur = async (user) => {
 
             case "2": {
 
-                const id = await question("ID de la note à modifier : ");
+
+                const student_id = await choixEtudiant(question);
+                const subject_id = await choixMatiere(question);
+
+                console.table(getStudentGrades(student_id, subject_id));
+
+
+                const notes = getStudentGrades(student_id, subject_id);
+
+                if (notes.length === 0) {
+                    console.log("Aucune note trouvée pour cet étudiant dans cette matière.");
+                    break;
+                }
+
+                console.table(notes);
+
+                const id = await question("Choisir le numero dans le tableau : ");
                 const note = await question("Nouvelle note : ");
 
                 updateGrades(Number(id), { note: Number(note) });
                 console.log("Note modifiée.");
+                 logger.info(`${user.nom} a modifié une note de l'étudiant ID ${student_id}`);
                 break;
 
             }
@@ -894,6 +935,7 @@ const sommaireProfesseur = async (user) => {
 
                 createAbsence(Number(student_id), status);
                 console.log("Absence enregistrée.");
+                 logger.info(`${user.nom} a enregistré une absence (${status}) pour l'étudiant ID ${student_id}`);
                 break;
 
             }
@@ -904,8 +946,8 @@ const sommaireProfesseur = async (user) => {
                 console.table(getAllStudents()); break;
             }
 
-            case "0": continuer = false; break;
 
+            case "0": continuer = false; break;
             default: console.log("Choix invalide.");
         }
     }
@@ -935,20 +977,9 @@ const sommaireEtudiant = async (etudiant) => {
 
             case "1": {
 
-                const matieres = getAllSubjects();
+                const subject_id = await choixMatiere (question)
 
-                let texte = "\n=== CHOISIR UNE MATIÈRE ===\n";
-
-                for (let i = 0; i < matieres.length; i++) {
-
-                    texte += `${matieres[i].id}. ${matieres[i].nom}\n`;
-
-                }
-
-                texte += "Votre choix : ";
-
-                const subjectId = await question(texte);
-                console.table(getStudentGrades(etudiant.id, Number(subjectId)));
+                console.table(getStudentGrades(etudiant.id, subject_id));
                 break;
 
             }
@@ -958,20 +989,9 @@ const sommaireEtudiant = async (etudiant) => {
 
             case "2": {
 
-                const matieres = getAllSubjects();
+                const subject_id = await choixMatiere (question)
 
-                let texte = "\n=== CHOISIR UNE MATIÈRE ===\n";
-
-                for (let i = 0; i < matieres.length; i++) {
-
-                    texte += `${matieres[i].id}. ${matieres[i].nom}\n`;
-                }
-
-                texte += "Votre choix : ";
-
-
-                const subjectId = await question(texte);
-                console.log(calculMoyenne(etudiant.id, Number(subjectId)));
+                console.log(calculMoyenne(etudiant.id, subject_id));
                 break;
 
             }

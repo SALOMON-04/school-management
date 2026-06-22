@@ -39,20 +39,20 @@ const connexionUser = async (role) => {
     // son role te ses information
 
     if (!user) {
-        
+        logger.warning(`L'utilisateur nom: ${nom} à essayé de se connecter`);
         console.log("Nom ou mot de passe incorrect.");
         return null;
     }
 
 
     if (user.role !== role) {
-       
+       logger.warning(`L'utilisateur ${nom} a essayé de se connecter en tant que ${role} mais est un ${user.role}`);
         console.log(`Ce compte n'est pas un ${role}.`);
         return null;
     }
 
 
-    
+    logger.info(`${user.nom} (${user.role}) connecté`);
     console.log(` Connecté : ${user.nom}`);
     return user;
 };
@@ -74,26 +74,27 @@ const connexionEtudiant = async () => {
     // son matricule te ses information
 
     if (!etudiant) {
-        
+        logger.warning(`la tantative de connextion de l'étudiant au matricule: ${matricule} a échoué.`);
         console.log("Matricule incorrect.");
         return null;
     }
-    console.log(etudiant);
+
+    
 
     
     // DEMANDER LE MOT DE PASS DE L'TUDIANT STOKER DANS LA TABLE USERS
 
     const user = getUserByNom(`${etudiant.prenom} ${etudiant.nom}`, password);
-    console.log(user);
+    
     
     if (!user) {
         
-        
+        logger.warning(`Mot de passe incorrect pour l'etudiant au matricule: ${matricule}`);
         console.log("Mot de passe incorrect.");
         return null;
     }
 
-    
+    logger.info(`${etudiant.prenom} ${etudiant.nom} (etudiant) connecté`);
     console.log(` Connecté : ${etudiant.nom}  ${etudiant.prenom}`);
     return etudiant;
 };

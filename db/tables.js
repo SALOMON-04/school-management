@@ -1,7 +1,5 @@
 import db from "./database.js";
 
-
-
 // TABLE USERS
 
 const TableUsers = `
@@ -15,10 +13,6 @@ const TableUsers = `
 
 db.exec(TableUsers);
 
-const insertUsers = db.prepare(`
-        INSERT INTO users(nom, role) 
-        VALUES (?, ?)
-`);
 
 
 
@@ -38,11 +32,6 @@ const TableStudents = `
 db.exec(TableStudents)
 
 
-const insertStudents = db.prepare(`
-        INSERT INTO students(matricule, nom, prenom, age, classe) 
-        VALUES (?, ?, ?, ?, ?)
-`);
-
 
 
 
@@ -59,10 +48,6 @@ const TableTeachers = `
 
 db.exec(TableTeachers)
 
-const insertTeachers = db.prepare(`
-        INSERT INTO teachers(nom, subject_id) 
-        VALUES (?, ?)
-`);
 
 
 
@@ -79,11 +64,6 @@ const TableSubjects = `
 `;
 
 db.exec(TableSubjects)
-
-const insertSubjects = db.prepare(`
-        INSERT INTO subjects(nom,  teacher_id) 
-        VALUES (?, ?)
-`)
 
 
 
@@ -102,11 +82,6 @@ const TableGrades = `
 `;
 
 db.exec(TableGrades)
-
-const insertGrades = db.prepare(`
-        INSERT INTO grades(student_id, subject_id, note) 
-        VALUES (?, ?, ?)
-`);
 
 
 
@@ -128,10 +103,6 @@ db.exec(TableAbsence);
 
 
 
-const insertAbsence = db.prepare(`
-        INSERT INTO absences(student_id, date, status) 
-        VALUES (?, ?, ?)
-`);
 
 
 

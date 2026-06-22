@@ -57,7 +57,7 @@ const getUserByNom = (nom, password) => {
 const updateUsers = (id, data) => {
 
     const updateUsersStmt = db.prepare(`
-        UPDATE users SET  nom = ?, role = ?,
+        UPDATE users SET  nom = ?, role = ?
         WHERE id = ?
     `);
 

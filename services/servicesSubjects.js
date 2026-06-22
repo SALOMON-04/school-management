@@ -1,3 +1,4 @@
+
 import db from "../db/database.js"
 import Subject from "../models/modelsSubject.js"
 
@@ -72,6 +73,37 @@ const updateASubject = (id, data) =>{
     return updateMatiere.run(data.nom, id)
 }
 
+
+
+// CHOISIR UNE POUR LE PROF ET L'ETUDIANT : on fait corresponde le choix  à l'id voulu  
+
+const choixMatiere = async (question) => {
+
+  const matieres = getAllSubjects() ;
+
+  let texte = `
+    ===========================
+    |   CHOISIR UNE MATIERE   |
+    ===========================
+    `;
+
+  for (let i = 0; i < matieres.length; i++){
+
+    texte += `${matiere[i].id}. ${matieres[i].nom}\n`
+  }
+
+  texte += "Votre choix : ";
+
+  const id = await question(texte);
+  return Number(id);
+
+}
+
+
+
+
+
+
 // SUPPRESSION D'UNE MATIERE
 
 
@@ -83,6 +115,6 @@ const deleteSubject = (id) => {
 };
 
 
-export { createSubject, getAllSubjects, getSubjectById, updateASubject, affectTeacherSubject, deleteSubject }
+export { createSubject, getAllSubjects, getSubjectById, updateASubject, choixMatiere, affectTeacherSubject, deleteSubject }
 
 
