@@ -62,10 +62,10 @@ Votre choix : `);
                         case "1": {
 
                             const nom = await question("Nom : ");
-                            const role = await question("Rôle (admin / profésseur) : ");
-                            const password = await question("Mot de passe : ");
+                            const role = await question("Rôle (Admin / Profésseur / Etudiant) : ");
+                            const password = await question("Username : ");
 
-                            createUser(nom, role, password);
+                            createUser(nom, role, username);
                             console.log("Utilisateur ajouté.");
                             logger.info(`${user.nom} a ajouté l'utilisateur ${nom} (${role})`);
                             break;
@@ -174,11 +174,11 @@ Votre choix : `);
                             const prenom = await question("Prénom : ");
                             const age = await question("Âge : ");
                             const classe = await question("Classe : ");
-                            const password = await question("Mot de passe : ");
+                            const password = await question("Username : ");
 
-                            createStudent(matricule, nom, prenom, Number(age), classe, password);
+                            createStudent(matricule, nom, prenom, Number(age), classe, username);
                             console.log("Étudiant ajouté.");
-                            logger.info(`${user.nom} a ajouté l'étudiant ${prenom} ${nom} (matricule: ${matricule})`);
+                            logger.info(`${user.nom} a ajouté l'étudiant  (matricule: ${matricule}) ${prenom} ${nom} `);
                             
                             break;
                         }
@@ -289,8 +289,8 @@ Votre choix : `);
 
                             const nom = await question("Nom : ");
                             const matiere = await question("ID de la matière : ");
-                            const password = await question("Mot de pass : ")
-                            createTeacher(nom, matiere, password);
+                            const password = await question("Username : ")
+                            createTeacher(nom, matiere, username);
 
                             console.log("Professeur ajouté.");
                              logger.info(`${user.nom} a ajouté le professeur ${nom}`);

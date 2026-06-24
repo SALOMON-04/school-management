@@ -7,6 +7,7 @@ const TableUsers = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
     role TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL
     )
 ` ;
@@ -25,7 +26,9 @@ const TableStudents = `
         nom TEXT NOT NULL,
         prenom TEXT NOT NULL,
         age INTEGER NOT NULL,
-        classe TEXT NOT NULL
+        classe TEXT NOT NULL,
+        user_id INTEGER UNIQUE,
+        FOREIGN KEY (user_id)  REFERENCES users(id)
     )
 ` ;
 
@@ -41,7 +44,9 @@ const TableTeachers = `
     CREATE TABLE IF NOT EXISTS teachers(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nom TEXT NOT NULL,
-        subject_id INTEGER
+        subject_id INTEGER,
+        user_id INTEGER UNIQUE,
+        FOREIGN KEY (user_id) REFERENCES users(id)
 
     )
 ` ;

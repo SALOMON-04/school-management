@@ -3,13 +3,14 @@ import Teacher from "../models/modelsTeacher.js";
 import { createUser } from "./servicesUsers.js";
 
 
+
 // CREER UN PROFFESSEUR
 
-const createTeacher = (nom, subject_id, password) => {
+const createTeacher = (nom, subject_id, username) => {
 
     // CREATION DU PROF EN FONCTION DU MODULE
 
-    const appTeacher = new Teacher(nom, subject_id, password) ;
+    const addTeacher = new Teacher(nom, subject_id) ;
 
     const insertTeachers = db.prepare(`
             INSERT OR IGNORE INTO teachers(nom, subject_id)
@@ -17,9 +18,9 @@ const createTeacher = (nom, subject_id, password) => {
         `);
 
         // INSERT LES INFO DU PROFDANS LA TABLE DES UITILISATEURS
-        createUser(nom, "professeur", password);
+        createUser(nom, "professeur", username);
 
-       return insertTeachers.run(appTeacher.nom, appTeacher.subject_id);
+       return insertTeachers.run(addTeacher.nom, addTeacher.subject_id);
 
        
 };

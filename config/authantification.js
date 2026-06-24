@@ -28,11 +28,11 @@ const fermer = () => reponse.close();
 
 const connexionUser = async (role) => {
 
-    const nom = await question("Nom : ");
+    const nom = await question("Username : ");
 
     const password = await question("Mot de passe : ");
 
-    const user = getUserByNom(nom, password);
+    const user = getUserByNom(username, password);
 
 
     // c'est condition vériffie l'existance de l'utilisateur,
@@ -46,7 +46,7 @@ const connexionUser = async (role) => {
 
 
     if (user.role !== role) {
-       logger.warning(`L'utilisateur ${nom} a essayé de se connecter en tant que ${role} mais est un ${user.role}`);
+        logger.warning(`L'utilisateur ${nom} a essayé de se connecter en tant que ${role} mais est un ${user.role}`);
         console.log(`Ce compte n'est pas un ${role}.`);
         return null;
     }
@@ -64,7 +64,7 @@ const connexionUser = async (role) => {
 
 const connexionEtudiant = async () => {
 
-    const matricule = await question("Matricule : ");
+    const matricule = await question("Username : ");
     const password = await question("Mot de passe : ");
 
     const etudiant = getStudentByMatricule(matricule);

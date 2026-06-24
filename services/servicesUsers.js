@@ -1,20 +1,26 @@
+import { use } from "react";
 import db from "../db/database.js";
 import Users from "../models/modelsUser.js"
+import generPassword from "../utils/password.js";
 
 
 //AJOUTER UN UTILISATEUR
 
-const createUser = (nom, role, password) => {
+const createUser = (nom, role, username) => {
+
+    const  password = generPassword() ; //génération du mot de passe automatique
 
     // Appel du models utilisateur
-    const addUsers = new Users(nom, role, password) ;
+    const addUsers = new Users(nom, role, username, password);
+
 
     const insertUsers = db.prepare(`
-            INSERT OR IGNORE INTO users(nom, role, password)
-            VALUES(?, ?, ?)
+            INSERT OR IGNORE INTO users(nom, role, username, password)
+            VALUES(?, ?, ?, ?)
     `)
 
-    return insertUsers.run(addUsers.nom, addUsers.role, addUsers.password)
+    console.log(`Mot de passe généré : ${password}`);
+    return insertUsers.run(addUsers.nom, addUsers.role, addUsers.username, addUsers.password)
 }
 
 
@@ -37,18 +43,18 @@ const getUserById = (id) => {
             SELECT * FROM users
             WHERE id = ?
     `).get(id);
-    
+
 };
 
 
 
 // RECHERCHE D'UN UTILISATUER PAR SON NOM ET MOT DE PASSE
 
-const getUserByNom = (nom, password) => {
+const getUserByNom = (username, password) => {
     return db.prepare(`
         SELECT * FROM users
-        WHERE nom = ? AND password = ?
-    `).get(nom, password);
+        WHERE username = ? AND password = ?
+    `).get(username, password);
 };
 
 

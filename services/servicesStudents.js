@@ -7,7 +7,7 @@ import { createUser } from "./servicesUsers.js";
 
 // CREATION DE L'ETUDIANT
 
-const createStudent = (matricule, nom, prenom, age, classe, password) => {
+const createStudent = (matricule, nom, prenom, age, classe, username) => {
 
     // creation de létudient en fonction de son module
 
@@ -19,7 +19,7 @@ const createStudent = (matricule, nom, prenom, age, classe, password) => {
         `);
 
         // AJOUT DE L'ETUDIANT DANS LA TABLE DES UTILISATEUR
-        createUser(`${prenom} ${nom}`, "etudiant", password);
+        createUser(`${prenom} ${nom}`, "etudiant", username);
 
        return insertStudents.run(appStudent.matricule, appStudent.nom, appStudent.prenom, appStudent.age, appStudent.classe);
 
