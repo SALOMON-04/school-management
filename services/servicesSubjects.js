@@ -89,7 +89,7 @@ const choixMatiere = async (question) => {
 
   for (let i = 0; i < matieres.length; i++){
 
-    texte += `${matiere[i].id}. ${matieres[i].nom}\n`
+    texte += `${matieres[i].id}. ${matieres[i].nom}\n`
   }
 
   texte += "Votre choix : ";

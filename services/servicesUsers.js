@@ -1,4 +1,3 @@
-import { use } from "react";
 import db from "../db/database.js";
 import Users from "../models/modelsUser.js"
 import generPassword from "../utils/password.js";
@@ -18,9 +17,14 @@ const createUser = (nom, role, username) => {
             INSERT OR IGNORE INTO users(nom, role, username, password)
             VALUES(?, ?, ?, ?)
     `)
+    
+    const result = insertUsers.run(addUsers.nom, addUsers.role, addUsers.username, addUsers.password)
 
     console.log(`Mot de passe généré : ${password}`);
-    return insertUsers.run(addUsers.nom, addUsers.role, addUsers.username, addUsers.password)
+
+
+    // on retourne le résultat ET l'id généré, pour que createStudent/createTeacher puissent l'utiliser
+    return result.lastInsertRowid ;
 }
 
 
@@ -50,7 +54,7 @@ const getUserById = (id) => {
 
 // RECHERCHE D'UN UTILISATUER PAR SON NOM ET MOT DE PASSE
 
-const getUserByNom = (username, password) => {
+const getUserByUsername = (username, password) => {
     return db.prepare(`
         SELECT * FROM users
         WHERE username = ? AND password = ?
@@ -84,4 +88,4 @@ const deleteUser = (id) => {
 
 
 
-export { createUser, getAllUsers, getUserByNom, updateUsers, getUserById, deleteUser }
+export { createUser, getAllUsers, getUserByUsername, updateUsers, getUserById, deleteUser }

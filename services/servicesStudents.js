@@ -9,21 +9,22 @@ import { createUser } from "./servicesUsers.js";
 
 const createStudent = (matricule, nom, prenom, age, classe, username) => {
 
-    // creation de létudient en fonction de son module
 
-    const appStudent = new Student(matricule, nom, prenom, age, classe) ;
+    // AJOUT DE L'ETUDIANT DANS LA TABLE DES UTILISATEUR
+    const user_id = createUser(`${prenom} ${nom}`, "etudiant", username);
+
+    // creation de létudient en fonction de son module
+    const appStudent = new Student(matricule, nom, prenom, age, classe, user_id);
 
     const insertStudents = db.prepare(`
-            INSERT OR IGNORE INTO students(matricule, nom, prenom, age, classe)
-            VALUES(?, ?, ?, ?, ?)
+            INSERT OR IGNORE INTO students(matricule, nom, prenom, age, classe, user_id)
+            VALUES(?, ?, ?, ?, ?, ?)
         `);
 
-        // AJOUT DE L'ETUDIANT DANS LA TABLE DES UTILISATEUR
-        createUser(`${prenom} ${nom}`, "etudiant", username);
 
-       return insertStudents.run(appStudent.matricule, appStudent.nom, appStudent.prenom, appStudent.age, appStudent.classe);
+    return insertStudents.run(appStudent.matricule, appStudent.nom, appStudent.prenom, appStudent.age, appStudent.classe, appStudent.user_id);
 
-       
+
 };
 
 
@@ -78,7 +79,7 @@ const updateStudent = (id, data) => {
 
 const choixEtudiant = async (question) => {
 
-    const etudiants = getAllStudents() ;
+    const etudiants = getAllStudents();
 
     let texte = `
     ===========================
@@ -87,15 +88,15 @@ const choixEtudiant = async (question) => {
     `;
 
 
-    for(let i = 0; i < etudiants.length;  i++){
+    for (let i = 0; i < etudiants.length; i++) {
 
         texte += `${etudiants[i].id}. ${etudiants[i].prenom} ${etudiants[i].nom}\n`;
-    } ;
+    };
 
 
-    texte += "Votre choix : " ;
+    texte += "Votre choix : ";
 
-    const id = await question(texte) ;
+    const id = await question(texte);
 
     return Number(id)
 }

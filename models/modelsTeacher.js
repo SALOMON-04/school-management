@@ -1,7 +1,8 @@
 class Teacher {
-    constructor(nom, matiere){
+    constructor(nom, subject_id, user_id){
         this.nom = nom ;
-        this.matiere = matiere
+        this.subject_id = subject_id;
+        this.user_id = user_id;
     }
 }
 

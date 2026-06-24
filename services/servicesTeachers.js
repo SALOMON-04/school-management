@@ -8,21 +8,24 @@ import { createUser } from "./servicesUsers.js";
 
 const createTeacher = (nom, subject_id, username) => {
 
+    // INSERT LES INFO DU PROFDANS LA TABLE DES UITILISATEURS
+    const user_id = createUser(nom, "professeur", username);
+
+
     // CREATION DU PROF EN FONCTION DU MODULE
 
-    const addTeacher = new Teacher(nom, subject_id) ;
+    const addTeacher = new Teacher(nom, subject_id, user_id);
 
     const insertTeachers = db.prepare(`
-            INSERT OR IGNORE INTO teachers(nom, subject_id)
-            VALUES(?, ?)
+            INSERT OR IGNORE INTO teachers(nom, subject_id, user_id)
+            VALUES(?, ?, ?)
         `);
 
-        // INSERT LES INFO DU PROFDANS LA TABLE DES UITILISATEURS
-        createUser(nom, "professeur", username);
 
-       return insertTeachers.run(addTeacher.nom, addTeacher.subject_id);
 
-       
+    return insertTeachers.run(addTeacher.nom, addTeacher.subject_id, addTeacher.user_id);
+
+
 };
 
 
@@ -45,7 +48,7 @@ const getAllTeacherAvecMatiere = () => {
         FROM teachers
         LEFT JOIN subjects ON teachers.subject_id = subjects.id  
     `).all();
-    
+
 };
 
 
@@ -80,10 +83,10 @@ const updateTeacher = (id, data) => {
 const deleteTeacher = (id) => {
 
     // DESACTIVATION DE TEACHER_ID DANS LA TABLE SUBJECT ET REN LA COLONE NULL
-    
+
     db.prepare(` 
              UPDATE subjects SET teacher_id = NULL WHERE teacher_id = ?
-        `).run(id) ;
+        `).run(id);
 
     // SUPRESSION DU PROFESSEUR PAR SON ID
 
@@ -94,4 +97,4 @@ const deleteTeacher = (id) => {
 
 
 
-export { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherById, updateTeacher, deleteTeacher}
+export { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherById, updateTeacher, deleteTeacher }

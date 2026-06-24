@@ -1,6 +1,6 @@
 import readline from "readline"; // "readline" va nous permettre de lire ce l'utilisateur va entré dans le terminale
 
-import { getUserByNom } from "../services/servicesUsers.js"; 
+import { getUserByUsername, getUserById } from "../services/servicesUsers.js";
 import { getStudentByMatricule } from "../services/servicesStudents.js";
 import { logger } from "../utils/logger.js";
 
@@ -20,7 +20,7 @@ const reponse = readline.createInterface({
 const question = (texte) => new Promise(resolve => reponse.question(texte, resolve));
 
 
-const fermer = () => reponse.close(); 
+const fermer = () => reponse.close();
 
 
 
@@ -28,25 +28,25 @@ const fermer = () => reponse.close();
 
 const connexionUser = async (role) => {
 
-    const nom = await question("Username : ");
+    const username = await question("Username : ");
 
     const password = await question("Mot de passe : ");
 
-    const user = getUserByNom(username, password);
+    const user = getUserByUsername(username, password);
 
 
     // c'est condition vériffie l'existance de l'utilisateur,
     // son role te ses information
 
     if (!user) {
-        logger.warning(`L'utilisateur nom: ${nom} à essayé de se connecter`);
-        console.log("Nom ou mot de passe incorrect.");
+        logger.warning(`La connexion de ${username} a échouée`);
+        console.log("Username ou mot de passe incorrect.");
         return null;
     }
 
 
     if (user.role !== role) {
-        logger.warning(`L'utilisateur ${nom} a essayé de se connecter en tant que ${role} mais est un ${user.role}`);
+        logger.warning(`${username} a essayé de se connecter en tant que ${role} mais est un ${user.role}`);
         console.log(`Ce compte n'est pas un ${role}.`);
         return null;
     }
@@ -64,7 +64,7 @@ const connexionUser = async (role) => {
 
 const connexionEtudiant = async () => {
 
-    const matricule = await question("Username : ");
+    const matricule = await question("Matricule: ");
     const password = await question("Mot de passe : ");
 
     const etudiant = getStudentByMatricule(matricule);
@@ -74,22 +74,19 @@ const connexionEtudiant = async () => {
     // son matricule te ses information
 
     if (!etudiant) {
-        logger.warning(`la tantative de connextion de l'étudiant au matricule: ${matricule} a échoué.`);
+        logger.warning(`Connexion échoué matricule: ${matricule} `);
         console.log("Matricule incorrect.");
         return null;
     }
 
-    
 
-    
-    // DEMANDER LE MOT DE PASS DE L'TUDIANT STOKER DANS LA TABLE USERS
 
-    const user = getUserByNom(`${etudiant.prenom} ${etudiant.nom}`, password);
-    
-    
-    if (!user) {
-        
-        logger.warning(`Mot de passe incorrect pour l'etudiant au matricule: ${matricule}`);
+
+    // Récupération de l'utilisateur lié a l'étudiant récherché
+    const user = getUserById(etudiant.user_id);
+
+    if (!user || user.password !== password) {
+        logger.warning(`Mot de passe incorrect pour l'étudiant au matricule: ${matricule}`);
         console.log("Mot de passe incorrect.");
         return null;
     }

@@ -293,7 +293,7 @@ Votre choix : `);
                             createTeacher(nom, matiere, username);
 
                             console.log("Professeur ajouté.");
-                             logger.info(`${user.nom} a ajouté le professeur ${nom}`);
+                            logger.info(`${user.nom} a ajouté le professeur ${nom}`);
                             break;
                         }
 
@@ -973,7 +973,7 @@ const sommaireEtudiant = async (etudiant) => {
         switch (choix.trim()) {
 
 
-            // Affichage des notes de l'étudiant dans une matière
+            // Affichage les notes de l'étudiant dans une matière
 
             case "1": {
 
