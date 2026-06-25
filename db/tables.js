@@ -71,7 +71,7 @@ const TableSubjects = `
 db.exec(TableSubjects)
 
 
-
+  
 
 // TABLE GRADES
 
