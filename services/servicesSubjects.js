@@ -77,15 +77,25 @@ const updateASubject = (id, data) =>{
 
 // CHOISIR UNE POUR LE PROF ET L'ETUDIANT : on fait corresponde le choix  à l'id voulu  
 
-const choixMatiere = async (question) => {
+const choixMatiere = async (question, teacher_id = null) => {
 
-  const matieres = getAllSubjects() ;
+
+  let matieres ;
+
+  if(teacher_id){
+    matieres = db.prepare(`SELECT * FROM subjects WHERE teacher_id = ?`).all(teacher_id);
+  }else{
+    matieres = getAllSubjects();
+  }
+
 
   let texte = `
-    ===========================
-    |   CHOISIR UNE MATIERE   |
-    ===========================
-    `;
+===========================
+|   CHOISIR UNE MATIERE   |
+===========================
+
+`;
+
 
   for (let i = 0; i < matieres.length; i++){
 

@@ -39,6 +39,9 @@ const getAllTeacher = () => {
         `).all();
 };
 
+
+
+
 // AFFICHE LE PROF EN PRECISENT LE NOM MATIERRE ET NON L'ID DE LA MATIERE
 
 const getAllTeacherAvecMatiere = () => {
@@ -51,6 +54,10 @@ const getAllTeacherAvecMatiere = () => {
 
 };
 
+
+const getTeacherByUser_id = (user_id) => {
+    return db.prepare(`SELECT * FROM teachers WHERE user_id = ?`).get(user_id);
+};
 
 
 // AFFICHER UN PROFFESSEUR
@@ -97,4 +104,4 @@ const deleteTeacher = (id) => {
 
 
 
-export { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherById, updateTeacher, deleteTeacher }
+export { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherById, getTeacherByUser_id, updateTeacher, deleteTeacher }

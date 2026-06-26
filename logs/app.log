@@ -2,3 +2,48 @@
 2026-06-22 16:12:15 [INFO] Nars Regis a ajouté l'étudiant Kama Koda (matricule: MAT-2026-005)
 2026-06-26 10:28:36 [INFO] Kablan Koda (admin) connecté
 2026-06-26 10:30:27 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-2026-001) Boka Bakan 
+2026-06-26 11:40:38 [INFO] Kablan Koda (admin) connecté
+2026-06-26 11:44:22 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-2026-002) Doma Moda 
+2026-06-26 11:46:12 [INFO] Doma Moda (etudiant) connecté
+2026-06-26 11:58:54 [INFO] Kablan Koda (admin) connecté
+2026-06-26 11:59:20 [INFO] Kablan Koda a ajouté la matière Mathématiques
+2026-06-26 11:59:43 [INFO] Kablan Koda a ajouté la matière Physique-Chimie
+2026-06-26 11:59:57 [INFO] Kablan Koda a ajouté la matière Français
+2026-06-26 12:00:08 [INFO] Kablan Koda a ajouté la matière Anglais
+2026-06-26 12:00:25 [INFO] Kablan Koda a ajouté la matière EPS
+2026-06-26 12:01:23 [WARNING] Connexion échoué matricule: DoKve!84 
+2026-06-26 12:02:07 [WARNING] Mot de passe incorrect pour l'étudiant au matricule: MAT-2026-001
+2026-06-26 12:02:34 [INFO] Doma Moda (etudiant) connecté
+2026-06-26 12:08:26 [INFO] Kablan Koda (admin) connecté
+2026-06-26 12:09:32 [INFO] Kablan Koda a ajouté le professeur M Cyril Somina
+2026-06-26 12:10:25 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 12:11:30 [INFO] M Cyril Somina a ajouté la note 12 pour l'étudiant ID 2
+2026-06-26 12:27:21 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 12:46:52 [WARNING] La connexion de  a échouée
+2026-06-26 12:47:36 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 13:04:09 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 13:05:34 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 13:08:47 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 13:09:11 [INFO] M Cyril Somina a ajouté la note 15 pour l'étudiant ID 2
+2026-06-26 13:19:58 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 13:20:16 [INFO] M Cyril Somina a ajouté la note 19 pour l'étudiant 2
+2026-06-26 13:23:58 [INFO] M Cyril Somina (professeur) connecté
+2026-06-26 15:05:14 [INFO] Kablan Koda (admin) connecté
+2026-06-26 15:42:39 [WARNING] La connexion de admin a échouée
+2026-06-26 15:42:57 [INFO] Kablan Koda (admin) connecté
+2026-06-26 15:55:36 [INFO] Kablan Koda (admin) connecté
+2026-06-26 15:56:35 [INFO] Kablan Koda a ajouté le professeur Kobenan
+2026-06-26 15:59:05 [INFO] Kablan Koda a affecté le professeur ID 2 à la matière ID 5
+2026-06-26 16:02:45 [INFO] Kablan Koda (admin) connecté
+2026-06-26 16:03:48 [INFO] Kablan Koda (admin) connecté
+2026-06-26 16:05:18 [WARNING] La connexion de Kobenan  a échouée
+2026-06-26 16:06:04 [WARNING] La connexion de Ko100@* a échouée
+2026-06-26 16:08:16 [INFO] Kobenan (professeur) connecté
+2026-06-26 16:13:24 [WARNING] La connexion de Ko200@* a échouée
+2026-06-26 16:13:47 [INFO] Kobenan (professeur) connecté
+2026-06-26 16:14:44 [INFO] Kobenan a ajouté la note 17 pour l'étudiant 2
+2026-06-26 16:26:57 [INFO] Kobenan (professeur) connecté
+2026-06-26 16:28:36 [INFO] Kobenan a modifié une note de l'étudiant ID 2
+2026-06-26 16:35:07 [WARNING] La connexion de Ko200@* a échouée
+2026-06-26 16:35:22 [WARNING] La connexion de Ko200@* a échouée
+2026-06-26 16:35:44 [INFO] Kobenan (professeur) connecté

@@ -3,7 +3,7 @@ import { menuPrincipal, menuRole, menuAdmin, menuProfesseur, menuEtudiant } from
 import { question, fermer, connexionUser, connexionEtudiant } from "./authantification.js";
 
 import { createUser, getAllUsers, updateUsers, getUserById, deleteUser } from "../services/servicesUsers.js";
-import { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherById, updateTeacher, deleteTeacher } from "../services/servicesTeachers.js";
+import { createTeacher, getAllTeacher, getAllTeacherAvecMatiere, getTeacherByUser_id, getTeacherById, updateTeacher, deleteTeacher } from "../services/servicesTeachers.js";
 import { createSubject, getAllSubjects, getSubjectById, updateASubject, choixMatiere, affectTeacherSubject, deleteSubject } from "../services/servicesSubjects.js";
 import { createStudent, getAllStudents, getStudentById, updateStudent, choixEtudiant, deleteStudent } from "../services/servicesStudents.js";
 import { addNoteGrade, updateGrades, deleteGrades, affGrades, getStudentGrades, calculMoyenne, meilleurEtudiant } from "../services/servicesGrades.js";
@@ -417,6 +417,7 @@ Votre choix : `);
                         case "2": {
 
                             // Lister tous les profs
+                            console.table(getAllSubjects())
                             console.table(getAllTeacher())
 
                             const subjectId = await question("ID de la matière : ");
@@ -871,6 +872,8 @@ Votre choix : `);
 const sommaireProfesseur = async (user) => {
     let continuer = true;
 
+    const teacher = getTeacherByUser_id(user.id) ; // récupération de la fiche du teacher
+
     //  cette boucle nous permet de ne pas sortir du sommaire profésseur après une action
 
     while (continuer) {
@@ -883,12 +886,12 @@ const sommaireProfesseur = async (user) => {
             case "1": {
 
                 const student_id = await choixEtudiant(question);
-                const subject_id = await choixMatiere(question);
+                const subject_id = await choixMatiere(question, teacher.id);  // filtre par l'id du prof
                 const note = await question("Note : ");
 
                 addNoteGrade(Number(student_id), Number(subject_id), Number(note));
                 console.log("Note ajoutée.");
-                logger.info(`${user.nom} a ajouté la note ${note} pour l'étudiant ID ${student_id}`);
+                logger.info(`${user.nom} a ajouté la note ${note} pour l'étudiant ${student_id}`);
                 break;
 
             }
@@ -900,7 +903,7 @@ const sommaireProfesseur = async (user) => {
 
 
                 const student_id = await choixEtudiant(question);
-                const subject_id = await choixMatiere(question);
+                const subject_id = await choixMatiere(question, teacher.id);
 
                 console.table(getStudentGrades(student_id, subject_id));
 
@@ -914,7 +917,7 @@ const sommaireProfesseur = async (user) => {
 
                 console.table(notes);
 
-                const id = await question("Choisir le numero dans le tableau : ");
+                const id = await question("Choisir l'ID dans le tableau : ");
                 const note = await question("Nouvelle note : ");
 
                 updateGrades(Number(id), { note: Number(note) });

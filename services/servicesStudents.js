@@ -85,12 +85,13 @@ const choixEtudiant = async (question) => {
     ===========================
         CHOISIR UN ETUDIANT
     ===========================
+
     `;
 
 
     for (let i = 0; i < etudiants.length; i++) {
 
-        texte += `${etudiants[i].id}. ${etudiants[i].prenom} ${etudiants[i].nom}\n`;
+        texte += `${etudiants[i].id}. ${etudiants[i].prenom} ${etudiants[i].nom} ${etudiants[i].classe}\n`;
     };
 
 

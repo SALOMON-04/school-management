@@ -7,7 +7,7 @@ import generPassword from "../utils/password.js";
 
 const createUser = (nom, role, username) => {
 
-    const  password = generPassword() ; //génération du mot de passe automatique
+    const  password = generPassword(nom) ; //génération du mot de passe automatique
 
     // Appel du models utilisateur
     const addUsers = new Users(nom, role, username, password);
