@@ -66,6 +66,8 @@ const updateAbsence = (id, data) => {
 // SUPPRIMER UNE ABSENCE
 
 const deleteAbsence = (id) => {
+
+    
     return db.prepare(`
             DELETE FROM absences WHERE id = ?
         `).run(id);
@@ -99,10 +101,9 @@ const nombreAbsences = (studentId) => {
 const getStudentAbsences = (studentId) => {
 
     return db.prepare(`
-        SELECT *
-        FROM absences
-        WHERE student_id = ?
-    `).all(studentId);
+            SELECT * FROM absences
+            WHERE student_id = ?
+        `).all(studentId);
 
 };
 

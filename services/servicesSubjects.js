@@ -118,10 +118,22 @@ const choixMatiere = async (question, teacher_id = null) => {
 
 
 const deleteSubject = (id) => {
+
+  //suppression de la clé subject dans la table subject
+  db.prepare(`UPDATE teachers SET subject_id = NULL WHERE subject_id = ?`).run(id);
+
+
+  //spression de la clé lier au notes dans la table grades
+  db.prepare(`DELETE FROM grades WHERE subject_id = ?`).run(id);
+
+
+  //suppression de la matiè!re
+
   return db.prepare(`
             DELETE FROM subjects 
             WHERE  id = ?
         `).run(id)
+
 };
 
 

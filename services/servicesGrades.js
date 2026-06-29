@@ -186,6 +186,8 @@ const meilleurEtudiant = (subject_id) => {
 // SUPPRIMER UNE NOTE
 
 const deleteGrades = (id) => {
+
+    
     return db.prepare(`
             DELETE FROM grades 
             WHERE id = ?

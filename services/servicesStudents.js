@@ -107,6 +107,16 @@ const choixEtudiant = async (question) => {
 // SUPPRIMER UN ETUDIANT
 
 const deleteStudent = (id) => {
+
+    const student = getAllStudents() ;
+
+    //on supprime aussi ses abscences et notes
+    db.prepare(`DELETE FROM grades WHERE student_id = ?`).run(id);
+    db.prepare(`DELETE FROM absences WHERE student_id = ?`).run(id);
+    
+    //suppresion de la clé qui unit l'etudiant a la table users
+    db.prepare(`DELETE Frome users WHERE id = ?`)
+    
     return db.prepare(`
             DELETE FROM students WHERE id = ?
         `).run(id);

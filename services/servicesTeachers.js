@@ -89,6 +89,10 @@ const updateTeacher = (id, data) => {
 
 const deleteTeacher = (id) => {
 
+
+    const teacher = getAllTeacher();
+
+
     // DESACTIVATION DE TEACHER_ID DANS LA TABLE SUBJECT ET REN LA COLONE NULL
 
     db.prepare(` 
@@ -100,6 +104,11 @@ const deleteTeacher = (id) => {
     return db.prepare(`
             DELETE FROM teachers WHERE id = ?
         `).run(id);
+
+
+    db.prepare(`
+            DELETE FROM users WHERE id = ?
+        `)
 };
 
 
