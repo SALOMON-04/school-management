@@ -61,6 +61,8 @@ Votre choix : `);
 
                         case "1": {
 
+                            console.table(getAllUsers()); // Afficher tous les utilisateur existant dans la base de données
+
                             const nom = await question("Nom : ");
                             const role = await question("Rôle (Admin / Profésseur / Etudiant) : ");
                             const username = await question("Username : ");
@@ -73,9 +75,12 @@ Votre choix : `);
                         }
 
 
-                        // Modification des infos d'un utilisateur t
+                        // Modification des infos d'un utilisateur 
 
                         case "2": {
+
+
+                            console.table(getAllUsers()); // Afficher tous les utilisateur existant dans la base de données
 
                             const id = await question("ID de l'utilisateur à modifier : ");
                             const nom = await question("Nouveau nom : ");
@@ -101,6 +106,8 @@ Votre choix : `);
 
                         case "3": {
 
+                            console.table(getAllUsers()); // Afficher tous les utilisateur existant dans la base de données
+
                             const id = await question("ID de l'utilisateur à supprimer : ");
                             deleteUser(Number(id));
 
@@ -122,6 +129,9 @@ Votre choix : `);
                         // Recherche d'un seul utilisateur par son ID
 
                         case "5": {
+                            
+                            console.table(getAllUsers()); // Afficher tous les utilisateur existant dans la base de données
+
                             const id = await question("ID de l'utilisateur : ");
                             console.log(getUserById(Number(id)));
                             break;
@@ -176,6 +186,17 @@ Votre choix : `);
                             const classe = await question("Classe : ");
                             const username = await question("Username : ");
 
+
+                            // Cette condition permet de vérifier si un champs est vide si oui, l'enregistrement est annulé
+
+                            if (!matricule.trim() || !nom.trim() || !prenom.trim() || !age.trim() || !classe.trim()) {
+                                console.log("Tous les champs sont obligatoires.");
+                                logger.warning(`${user.nom} a tenté de modifier l'étudiant ID ${id} avec des champs vides`);
+                                break;
+                            }
+
+
+
                             createStudent(matricule, nom, prenom, Number(age), classe, username);
                             console.log("Étudiant ajouté.");
                             logger.info(`${user.nom} a ajouté l'étudiant  (matricule: ${matricule}) ${prenom} ${nom} `);
@@ -196,11 +217,11 @@ Votre choix : `);
                             const classe = await question("Nouvelle classe : ");
 
 
-                            // Cette condition perlet de v'rifier si un champs est vide si oui, l'enregistrement est annulé
+                            // Cette condition permet de vérifier si un champs est vide si oui, l'enregistrement est annulé
 
                             if (!matricule.trim() || !nom.trim() || !prenom.trim() || !age.trim() || !classe.trim()) {
                                 console.log("Tous les champs sont obligatoires.");
-                                logger.warning(`${user.nom} a tenté de modifier l'étudiant ID ${id} avec des champs vides`);
+                                logger.warning(`${user.nom} a tenté d'enregistrer un étudiantavec des champs vides`);
                                 break;
                             }
 
@@ -214,6 +235,8 @@ Votre choix : `);
                         // Supression d'un étudiant
 
                         case "3": {
+
+                            console.table(getAllStudents()); // Afficher tout les étudiant dans la base de donnée
 
                             const id = await question("ID de l'étudiant à supprimer : ");
 
@@ -235,6 +258,9 @@ Votre choix : `);
                         // rechercher un etudiant
 
                         case "5": {
+
+                            console.table(getAllStudents()); // Afficher tout les étudiant dans la base de donnée
+                            
                             const id = await question("ID de l'étudiant : ");
                             const etudiant = getStudentById(Number(id));
                             console.log(etudiant ?? "Étudiant introuvable.");
@@ -284,6 +310,9 @@ Votre choix : `);
 
                         case "1": {
 
+                            //afficher tous les profs 
+                            console.table(getAllTeacher());
+
                             // Affiche toutes les matières pour le choix des id
                             console.table(getAllSubjects());
 
@@ -291,6 +320,15 @@ Votre choix : `);
                             const matiere = await question("ID de la matière : ");
                             const username = await question("Username : ")
                             createTeacher(nom, matiere, username);
+
+                            // Cette condition permet de vérifier si un champs est vide si oui, l'enregistrement est annulé
+
+                            if (!nom.trim() || !matiere.trim() || !username.trim()) {
+                                console.log("Tous les champs sont obligatoires.");
+                                logger.warning(`${user.nom} a tenté d'enregistré un professeur avec des champs vides`);
+                                break;
+                            }
+
 
                             console.log("Professeur ajouté.");
                             logger.info(`${user.nom} a ajouté le professeur ${nom}`);
@@ -302,16 +340,18 @@ Votre choix : `);
 
                         case "2": {
 
-                            console.table(getAllSubjects());
+
+                            console.table(getAllTeacher()); // afficher tous les profs
+                            console.table(getAllSubjects()); // afficher toutes les matières
 
                             const id = await question("ID du professeur à modifier : ");
                             const nom = await question("Nouveau nom : ");
                             const matiere = await question("Nouvelle ID de la matière : ");
+                            const username = await question("Nouveau username : ")
 
+                            // Cette condition permet de vérifier si un champs est vide si oui, l'enregistrement est annulé
 
-                            // PERMET VERIFIER SI LES CHAMPS SONT VIDES LORS DE LA MODIFFICATION
-
-                            if (!nom.trim() || !matiere.trim()) {
+                            if (!nom.trim() || !matiere.trim() || !username.trim()) {
                                 console.log("Tous les champs sont obligatoires.");
                                 logger.warning(`${user.nom} a tenté de modifier le professeur ID ${id} avec des champs vides`);
                                 break;
@@ -327,6 +367,9 @@ Votre choix : `);
                         // Supression d'un  prof
 
                         case "3": {
+
+
+                            console.table(getAllTeacher()); // afficher tous les profs
 
                             const id = await question("ID du professeur à supprimer : ");
                             deleteTeacher(Number(id));
@@ -352,6 +395,8 @@ Votre choix : `);
 
                         case "5": {
 
+                            console.table(getAllTeacher()); // afficher tous les profs
+                            
                             const id = await question("ID du professeur : ");
                             console.log(getTeacherById(Number(id)));
                             break;
@@ -403,6 +448,8 @@ Votre choix : `);
 
                         case "1": {
 
+                            console.table(getAllSubjects()); //afficher toute les matière affin de voir celle qui existe déja
+                            
                             const nom = await question("Nom de la matière : ");
                             createSubject(nom);
 
@@ -416,9 +463,9 @@ Votre choix : `);
 
                         case "2": {
 
-                            // Lister tous les profs
-                            console.table(getAllSubjects())
-                            console.table(getAllTeacher())
+                            
+                            console.table(getAllSubjects()) // Lister tous les matières
+                            console.table(getAllTeacher());  // Lister tous les profs
 
                             const subjectId = await question("ID de la matière : ");
                             const teacherId = await question("ID du professeur : ");
@@ -442,6 +489,9 @@ Votre choix : `);
                         // Modification d'une matière avec le prof concerné
 
                         case "4": {
+
+
+                            console.table(getAllSubjects()); // Afficher toutes les matière
 
                             const id = await question("ID de la note à modifier : ");
                             const matiere = await question("Nouvelle matière : ");
@@ -530,6 +580,9 @@ Votre choix : `);
 
                         case "1": {
 
+                            console.table(getAllStudents()); // Afficher tous les etudiants
+                            console.table(getAllSubjects()); // Afficher toutes les matières
+
                             const student_id = await question("ID de l'étudiant : ");
                             const subject_id = await question("ID de la matière : ");
                             const note = await question("Note : ");
@@ -545,6 +598,8 @@ Votre choix : `);
                         // Modification d'une note existante
 
                         case "2": {
+
+                            console.table(affGrades()) // afficher la table grades et les information quelle contient
 
                             const id = await question("ID de la note à modifier : ");
                             const note = await question("Nouvelle note : ");
@@ -582,6 +637,10 @@ Votre choix : `);
 
                         case "4": {
 
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
+                            console.table(getAllSubjects()); // Afficher toutes les matière existantes
+
+
                             const student_id = await question("ID de l'étudiant : ");
                             const subject_id = await question("ID de la matière : ");
 
@@ -593,6 +652,11 @@ Votre choix : `);
                         // Calcul de la moyenne d'un étudiant dans une matière
 
                         case "5": {
+
+
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
+                            console.table(getAllSubjects()); // Afficher toutes les matière existantes
+
 
                             const student_id = await question("ID de l'étudiant : ");
                             const subject_id = await question("ID de la matière : ");
@@ -645,6 +709,9 @@ Votre choix : `);
                         // Enregistrement d'une absence pour un étudiant
 
                         case "1": {
+
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
+
                             const student_id = await question("ID de l'étudiant : ");
                             const status = await question("Statut (Justifié / Non justifié) : ");
 
@@ -658,6 +725,10 @@ Votre choix : `);
                         // Modification d'une absence existante
 
                         case "2": {
+
+
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
+                            console.table(getAllAbscence()); // Afficher la base de donner des absences
 
                             const id = await question("ID de l'absence à modifier : ");
                             const student_id = await question("Nouvel ID étudiant : ");
@@ -684,6 +755,8 @@ Votre choix : `);
 
                         case "3": {
 
+                            console.table(getAllAbscence()); // Afficher la base de donner des absences
+
                             const id = await question("ID de l'absence à supprimer : ");
                             deleteAbsence(Number(id));
 
@@ -698,6 +771,8 @@ Votre choix : `);
 
                         case "4": {
 
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
+
                             const student_id = await question("ID de l'étudiant : ");
                             console.log(getStudentAbsences(Number(student_id)));
                             break;
@@ -707,6 +782,9 @@ Votre choix : `);
                         // Comptage des absences non justifiées d'un étudiant
 
                         case "5": {
+
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
+
                             const student_id = await question("ID de l'étudiant : ");
                             console.log(nombreAbsences(Number(student_id)));
                             break;
@@ -762,6 +840,9 @@ Votre choix : `);
 
                         case "1": {
 
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
+                            console.table(getAllSubjects()); // Afficher toutes les matière existantes
+
                             const student_id = await question("ID de l'étudiant : ");
                             const subject_id = await question("ID de la matière : ");
 
@@ -774,6 +855,8 @@ Votre choix : `);
                         // Moyenne générale d'un étudiant toutes matières confondues
 
                         case "2": {
+
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
 
                             const student_id = await question("ID de l'étudiant : ");
 
@@ -796,6 +879,8 @@ Votre choix : `);
 
                         case "4": {
 
+                            console.table(getAllSubjects()); // Afficher toutes les matière existantes
+
                             const subject_id = await question("ID de la matière : ");
 
                             console.log(meilleurEtudiant(Number(subject_id)));
@@ -816,6 +901,8 @@ Votre choix : `);
                         // Comptage des absences non justifiées d'un étudiant
 
                         case "6": {
+
+                            console.table(getAllStudents()); // Afficher tous les étudiants existant
 
                             const student_id = await question("ID de l'étudiant : ");
 
@@ -901,6 +988,7 @@ const sommaireProfesseur = async (user) => {
 
             case "2": {
 
+                console.table(getAllStudents()); // Afficher tous les étudiants existant
 
                 const student_id = await choixEtudiant(question);
                 const subject_id = await choixMatiere(question, teacher.id);
@@ -933,6 +1021,8 @@ const sommaireProfesseur = async (user) => {
 
             case "3": {
 
+                console.table(getAllStudents()); // Afficher tous les étudiants existant
+
                 const student_id = await question("ID de l'étudiant : ");
                 const status = await question("Statut (Justifié / Non justifié) : ");
 
@@ -942,6 +1032,7 @@ const sommaireProfesseur = async (user) => {
                 break;
 
             }
+
 
             // Affichage de tous les étudiants
 

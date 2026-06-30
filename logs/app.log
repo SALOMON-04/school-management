@@ -73,3 +73,49 @@
 2026-06-29 23:12:40 [INFO] Kablan Koda a supprimé l'utilisateur ID 4
 2026-06-29 23:12:46 [INFO] Kablan Koda a supprimé l'utilisateur ID 3
 2026-06-29 23:13:20 [INFO] Kablan Koda a supprimé l'utilisateur ID 2
+2026-06-30 12:10:27 [INFO] Kablan Koda (admin) connecté
+2026-06-30 12:10:59 [WARNING] Kablan Koda a tenté de modifier la matière ID 1 avec un champ vide
+2026-06-30 12:11:36 [INFO] Kablan Koda a supprimé la matière ID 11
+2026-06-30 12:11:44 [INFO] Kablan Koda a supprimé la matière ID 10
+2026-06-30 12:11:51 [INFO] Kablan Koda a supprimé la matière ID 9
+2026-06-30 12:12:40 [INFO] Kablan Koda a supprimé la matière ID 8
+2026-06-30 12:12:47 [INFO] Kablan Koda a supprimé la matière ID 7
+2026-06-30 12:13:00 [INFO] Kablan Koda a supprimé la matière ID 6
+2026-06-30 12:15:09 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-001)  Koba Kablan 
+2026-06-30 12:15:28 [INFO] Kablan Koda a supprimé l'étudiant ID 22
+2026-06-30 12:16:07 [INFO] Kablan Koda a supprimé l'utilisateur ID 22
+2026-06-30 12:28:18 [INFO] Kablan Koda (admin) connecté
+2026-06-30 12:29:55 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-001) René Kablan 
+2026-06-30 12:31:17 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-002) Tota Toto 
+2026-06-30 12:34:20 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-003) Piment Polo 
+2026-06-30 12:36:18 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-004) Karim Gotto 
+2026-06-30 12:38:04 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-005) Coulibaly Mouna 
+2026-06-30 12:39:48 [INFO] Kablan Koda a ajouté l'étudiant  (matricule: MAT-006) Ladé Goba 
+2026-06-30 12:44:03 [INFO] Kablan Koda a ajouté la matière Anglais
+2026-06-30 14:48:41 [INFO] Kablan Koda (admin) connecté
+2026-06-30 14:53:03 [INFO] Kablan Koda a ajouté le professeur M Dépé
+2026-06-30 14:53:59 [INFO] Kablan Koda a ajouté le professeur M Dah
+2026-06-30 14:54:48 [INFO] Kablan Koda a ajouté le professeur M Dolou
+2026-06-30 14:56:00 [INFO] Kablan Koda a ajouté le professeur M Digbo
+2026-06-30 14:56:50 [INFO] Kablan Koda a supprimé le professeur ID 0
+2026-06-30 15:13:42 [INFO] M Dépé (professeur) connecté
+2026-06-30 15:17:59 [INFO] Kablan Koda (admin) connecté
+2026-06-30 15:19:04 [INFO] Kablan Koda a affecté le professeur ID 9 à la matière ID 4
+2026-06-30 15:19:36 [INFO] Kablan Koda a affecté le professeur ID 10 à la matière ID 5
+2026-06-30 15:19:56 [INFO] Kablan Koda a affecté le professeur ID 11 à la matière ID 1
+2026-06-30 15:20:16 [INFO] Kablan Koda a affecté le professeur ID 12 à la matière ID 3
+2026-06-30 15:24:28 [INFO] M Dépé (professeur) connecté
+2026-06-30 15:25:09 [INFO] M Dépé a ajouté la note 12 pour l'étudiant 12
+2026-06-30 15:25:20 [INFO] M Dépé a ajouté la note 15 pour l'étudiant 12
+2026-06-30 15:26:10 [INFO] M Dépé a ajouté la note 17 pour l'étudiant 12
+2026-06-30 15:26:37 [INFO] M Dépé a ajouté la note 14 pour l'étudiant 12
+2026-06-30 15:27:14 [INFO] M Dépé a ajouté la note 18 pour l'étudiant 13
+2026-06-30 15:32:44 [INFO] M Dépé a ajouté la note 19 pour l'étudiant 13
+2026-06-30 15:33:06 [INFO] M Dépé a ajouté la note 15 pour l'étudiant 13
+2026-06-30 15:34:54 [INFO] M Dépé a ajouté la note 19 pour l'étudiant 13
+2026-06-30 15:36:09 [INFO] M Dépé a ajouté la note 17 pour l'étudiant 14
+2026-06-30 15:36:18 [INFO] M Dépé a ajouté la note 14 pour l'étudiant 14
+2026-06-30 15:36:39 [INFO] M Dépé a ajouté la note 18 pour l'étudiant 14
+2026-06-30 15:37:01 [INFO] M Dépé a ajouté la note 16 pour l'étudiant 14
+2026-06-30 15:39:00 [INFO] M Dépé a ajouté la note 13 pour l'étudiant 17
+2026-06-30 15:50:17 [INFO] M Dépé (professeur) connecté
