@@ -105,10 +105,6 @@ const deleteTeacher = (id) => {
             DELETE FROM teachers WHERE id = ?
         `).run(id);
 
-
-    db.prepare(`
-            DELETE FROM users WHERE id = ?
-        `)
 };
 
 

@@ -80,37 +80,25 @@ const updateUsers = (id, data) => {
 
 const deleteUser = (id) => {
 
+    // on cherche si cet utilisateur est lié à un étudiant
+    const student = db.prepare(`SELECT * FROM students WHERE user_id = ?`).get(id);
 
-    //supression des lien entre les clé lien les differentes table d'utilisateur
-
-    db.prepare(`UPDATE students SET user_id = NULL WHERE user_id = ?`).get(id)
-    db.prepare(`UPDATE teachers SET user_id = NULL WHERE user_id = ?`).get(id)
-    
-
-    // cette condition permet de cibler toute les table ou se trouve la clé du de l'etudiant en verifiant l'id choisis lors de la supression
     if (student) {
-
         db.prepare(`DELETE FROM grades WHERE student_id = ?`).run(student.id);
         db.prepare(`DELETE FROM absences WHERE student_id = ?`).run(student.id);
         db.prepare(`DELETE FROM students WHERE id = ?`).run(student.id);
-    
     }
 
+    // on cherche si cet utilisateur est lié à un professeur
+    const teacher = db.prepare(`SELECT * FROM teachers WHERE user_id = ?`).get(id);
 
-    
-    // cette condition permet de cibler toute les table ou se trouve la clé du teacher en verifiant l'id choisis lors de la supression
     if (teacher) {
-
         db.prepare(`UPDATE subjects SET teacher_id = NULL WHERE teacher_id = ?`).run(teacher.id);
         db.prepare(`DELETE FROM teachers WHERE id = ?`).run(teacher.id);
-    
     }
 
-
-    return db.prepare(`
-            DELETE FROM users WHERE id = ?
-    `).run(id);
-
+    // enfin on supprime l'utilisateur
+    return db.prepare(`DELETE FROM users WHERE id = ?`).run(id);
 };
 
 
