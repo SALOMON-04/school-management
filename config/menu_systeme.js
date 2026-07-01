@@ -988,15 +988,10 @@ const sommaireProfesseur = async (user) => {
 
             case "2": {
 
-                console.table(getAllStudents()); // Afficher tous les étudiants existant
-
                 const student_id = await choixEtudiant(question);
                 const subject_id = await choixMatiere(question, teacher.id);
 
-                console.table(getStudentGrades(student_id, subject_id));
-
-
-                const notes = getStudentGrades(student_id, subject_id);
+                const notes = getStudentGrades(student_id, subject_id); // Affichages des note de l'etudiant uniquement
 
                 if (notes.length === 0) {
                     console.log("Aucune note trouvée pour cet étudiant dans cette matière.");
@@ -1057,7 +1052,7 @@ const sommaireEtudiant = async (etudiant) => {
 
     let continuer = true;
 
-
+    
     //  cette boucle nous permet de ne pas sortir du sommaire étudiant après une action
 
     while (continuer) {
@@ -1152,14 +1147,14 @@ const choisirRole = async () => {
 
 
 
-// FONCTION DE D2MARAGE DU PROGRAME
+// FONCTION DE DEMARAGE DU PROGRAME
 
 
 export const demarrer = async () => {
 
     console.log(`
 ╔════════════════════════════════════════╗
-║   BIENVENU DANS MON SYTEME DE GESTION  ║
+║ BIENVENU DANS NOTRE SYTEME DE GESTION  ║
 ║              SCOLAIRE                  ║
 ╚════════════════════════════════════════╝
 `);
