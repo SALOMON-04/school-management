@@ -515,6 +515,8 @@ Votre choix : `);
 
                         case "5": {
 
+                            console.table(getAllSubjects()); // Afficher toutes les matière
+
                             const id = await question("ID de la matière : ");
                             console.log(getSubjectById(Number(id)));
                             break;
@@ -523,6 +525,8 @@ Votre choix : `);
                         // Supression de la matière par son ID
 
                         case "6": {
+
+                            console.table(getAllSubjects()); // Afficher toutes les matière
 
                             const id = await question("ID de la matière à supprimer : ");
                             deleteSubject(Number(id));
@@ -821,12 +825,10 @@ Votre choix : `);
 1. Moyenne d'un étudiant par matière
 2. Moyenne générale d'un étudiant
 3. Moyenne générale de l'école
-4. Meilleur étudiant par matière
-5. Meilleur étudiant toutes matières confondues
-6. Compter les absences d'un étudiant
-7. Nombre total d'utilisateurs
-8. Nombre total d'étudiants
-9. Nombre total de professeurs
+4. Compter les absences d'un étudiant
+5. Nombre total d'utilisateurs
+6. Nombre total d'étudiants
+7. Nombre total de professeurs
 0. Retour
 
 ===========================
@@ -875,32 +877,12 @@ Votre choix : `);
                         }
 
 
-                        // Meilleur étudiant dans une matière précise
-
-                        case "4": {
-
-                            console.table(getAllSubjects()); // Afficher toutes les matière existantes
-
-                            const subject_id = await question("ID de la matière : ");
-
-                            console.log(meilleurEtudiant(Number(subject_id)));
-                            break;
-
-                        }
-
-
-
-                        // Meilleur étudiant toutes matières confondues
-
-                        case "5": {
-                            console.log(moyenneGeneralEtuddiant());
-                            break;
-                        }
+                    
 
 
                         // Comptage des absences non justifiées d'un étudiant
 
-                        case "6": {
+                        case "4": {
 
                             console.table(getAllStudents()); // Afficher tous les étudiants existant
 
@@ -914,7 +896,7 @@ Votre choix : `);
 
                         // Nombre total d'utilisateurs enregistrés
 
-                        case "7": {
+                        case "5": {
                             console.log(totalUsers());
                             break;
                         }
@@ -922,7 +904,7 @@ Votre choix : `);
 
                         // Nombre total d'utilisateurs étudiants
 
-                        case "8": {
+                        case "6": {
                             console.log(totalStudent());
                             break;
                         }
@@ -930,7 +912,7 @@ Votre choix : `);
 
                         // Nombre total d'utilisateurs profésseur
 
-                        case "9": {
+                        case "7": {
                             console.log(totalProfesseur());
                             break;
                         }

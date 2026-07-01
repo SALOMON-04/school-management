@@ -127,6 +127,13 @@ const meilleurEtudiant = (subject_id) => {
             WHERE subject_id = ?
         `).all(subject_id);
 
+        
+    // Aucune note dans cette matière
+    if (meilleur.length === 0) {
+        console.log("Aucune note disponible pour cette matière.");
+        return null;
+    }
+
 
         // les varible qui vont recevoir l'id 
         // de l'étudiant et sa moyenne en fonction de la matière
